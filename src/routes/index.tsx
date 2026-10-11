@@ -7,10 +7,51 @@ import { CTA } from '@/components/site-shell';
 import { pageHead } from '@/lib/products';
 import hero from '@/assets/ingredients-hero.jpg';
 import farm from '@/assets/sourcing-farm.jpg';
+import worldMapNetwork from '@/assets/world-map-network.png';
+import worldMapMinimal from '@/assets/world-map-minimal.png';
 export const Route=createFileRoute('/')({head:()=>pageHead('Premium ingredients. Global possibilities.','India-sourced dehydrated vegetable, fruit and herbal powders for global food manufacturers, distributors and private-label buyers.'),component:Home});
 function Counter({end,suffix}:{end:number;suffix:string}){const ref=useRef<HTMLSpanElement>(null);const [count,setCount]=useState(end);useEffect(()=>{const node=ref.current;if(!node||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;const observer=new IntersectionObserver(entries=>{if(!entries[0]?.isIntersecting)return;const start=performance.now();let frame=0;const tick=(now:number)=>{const t=Math.min((now-start)/1100,1);setCount(Math.round(end*(1-Math.pow(1-t,3))));if(t<1)frame=requestAnimationFrame(tick)};frame=requestAnimationFrame(tick);observer.disconnect();return()=>cancelAnimationFrame(frame)},{threshold:.6});observer.observe(node);return()=>observer.disconnect()},[end]);return <span ref={ref}>{count}{suffix}</span>}
 const benefits=[{icon:Sprout,title:'Direct farm network',text:'A sourcing approach built around relationships, seasonality and ingredient integrity.'},{icon:SlidersHorizontal,title:'Made to your specification',text:'Mesh, colour, composition and packaging aligned with your formulation.'},{icon:FileCheck2,title:'Export paperwork handled',text:'Clear documentation and coordination for a smoother cross-border journey.'},{icon:Truck,title:'Reliable dispatch',text:'Production and shipping schedules agreed around your business needs.'},{icon:MessagesSquare,title:'A responsive team',text:'One conversation, clear answers and attentive coordination from enquiry onward.'},{icon:PackageCheck,title:'Private label ready',text:'Flexible packaging possibilities for ingredients that carry your brand.'}];
-function WorldMap(){return <svg className="world-map" viewBox="0 0 640 310" role="img" aria-label="Illustrative world map showing target markets, not verified export destinations"><path d="M38 58l55-32 55 6 39 34-21 24-15 6-16 38-26 1-14-26-34-9-13-26zm101 98 28-9 36 26 8 32-22 59-23 26-14-47-10-30zM255 53l30-16 43 5 26-17 40 9 23-7 75 19 45 26 54 4 23 33-49 15-27 24-29-6-18 28-33-10-20-34-36 3-31-27-30 9-16-23-29 10-19-16zm34 62 43-12 30 29 28 12-7 52-30 41-22-16-20-53-24-24zm221 115 42-15 44 20 11 25-36 16-55-18zM196 27l24-13 16 26-23 14z"/><circle cx="103" cy="93" r="5"/><circle cx="309" cy="78" r="5"/><circle cx="363" cy="129" r="5"/><circle cx="333" cy="169" r="5"/><circle cx="476" cy="146" r="5"/><circle cx="420" cy="134" r="7"/></svg>}
+function WorldMap(){
+  const [mapType, setMapType] = useState<'network'|'minimal'>('network');
+  return (
+    <div className="relative group w-full">
+      <div className="overflow-hidden rounded-2xl border border-primary/30 bg-[#0A1F15]/80 shadow-[0_15px_40px_rgba(0,0,0,0.45)] backdrop-blur-md transition-all duration-500 hover:border-primary/60">
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#0A1F15]">
+          <img
+            src={mapType === 'network' ? worldMapNetwork : worldMapMinimal}
+            alt={mapType === 'network' ? 'Aurelian International Global Export Network with worldwide shipping routes' : 'Aurelian International Global Target Markets Map'}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+            loading="lazy"
+          />
+          <div className="absolute top-3 right-3 flex items-center gap-1 bg-[#0F2A1D]/85 backdrop-blur-md px-2 py-1 rounded-full border border-primary/30 text-[10px]">
+            <button
+              type="button"
+              onClick={() => setMapType('network')}
+              className={`px-2.5 py-0.5 rounded-full transition-all text-[10px] ${mapType === 'network' ? 'bg-primary text-primary-foreground font-semibold shadow-sm' : 'text-dark-muted hover:text-on-forest'}`}
+            >
+              Export Routes
+            </button>
+            <button
+              type="button"
+              onClick={() => setMapType('minimal')}
+              className={`px-2.5 py-0.5 rounded-full transition-all text-[10px] ${mapType === 'minimal' ? 'bg-primary text-primary-foreground font-semibold shadow-sm' : 'text-dark-muted hover:text-on-forest'}`}
+            >
+              Minimal View
+            </button>
+          </div>
+        </div>
+        <div className="p-3.5 border-t border-white/10 flex items-center justify-between text-xs text-dark-muted bg-[#0F2A1D]/60">
+          <span className="flex items-center gap-2 text-[11px]">
+            <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse" />
+            Origin: India (Worldwide Sea & Air Freight Dispatches)
+          </span>
+          <span className="text-[10px] tracking-wider uppercase text-primary font-medium hidden sm:inline-block">Global Distribution Network</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 function Home(){return <>
 <section className="hero"><img src={hero} alt="Premium turmeric, beetroot and onion powders with fresh Indian ingredients" className="hero-image" width={1536} height={1024} fetchPriority="high"/><div className="container"><div className="hero-content"><div className="eyebrow">DEHYDRATED VEGETABLE & FRUIT POWDERS · EXPORTERS FROM INDIA</div><h1>Nature’s finest,<br/><em>dehydrated</em> and delivered<br/>worldwide.</h1><p className="hero-copy">Pure ingredients. Consistent quality. A dependable partner.<br/>Premium vegetable, fruit and herbal powders, thoughtfully sourced in India for your global business.</p><div className="hero-buttons"><Button variant="gold" asChild><Link to="/products">Explore Products <ArrowUpRight/></Link></Button><Button variant="editorial" asChild><Link to="/contact">Request a Quote <ArrowUpRight/></Link></Button></div><div className="hero-small"><span><Leaf/>Naturally sourced</span><span><ShieldCheck/>Quality-led processing</span><span><Globe2/>Export focused</span></div></div></div><span className="scroll-indicator">Scroll to explore</span><span className="hero-caption">FROM INDIAN SOIL. TO THE WORLD.</span></section>
 <section className="stats-strip"><div className="container"><div className="stats-grid"><div className="stat"><div className="stat-number"><Counter end={20} suffix="+"/></div><div className="stat-label">Countries Served*</div></div><div className="stat"><div className="stat-number"><Counter end={25} suffix="+"/></div><div className="stat-label">Products*</div></div><div className="stat"><div className="stat-number"><Counter end={100} suffix="%"/></div><div className="stat-label">Natural*</div></div><div className="stat"><div className="stat-number text-2xl">Bulk &<br className="hidden"/> Private Label</div><div className="stat-label">Solutions for your business</div></div></div><p className="placeholder-note">*Illustrative figures only. To be replaced with verified company data; product composition confirmed per specification.</p></div></section>
